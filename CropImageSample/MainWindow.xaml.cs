@@ -140,7 +140,7 @@ namespace CropImageSample
 
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
-
+           
             using (var file = File.OpenWrite(filename))
             {
                 encoder.Save(file);
