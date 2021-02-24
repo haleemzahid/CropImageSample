@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -123,21 +124,45 @@ namespace CropImageSample
       cropRect.Width = savedCropRect.Width;
       cropRect.Height = savedCropRect.Height;
     }
-    private void SaveDoneImage()
+        public void WriteToPng(UIElement element, string filename,Rect data)
+        {
+            var rect = data;
+            var visual = new DrawingVisual();
+
+            using (var dc = visual.RenderOpen())
+            {
+                dc.DrawRectangle(new VisualBrush(element), null, rect);
+            }
+
+            var bitmap = new RenderTargetBitmap(
+                (int)rect.Width, (int)rect.Height, 96, 96, PixelFormats.Default);
+            bitmap.Render(visual);
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+
+            using (var file = File.OpenWrite(filename))
+            {
+                encoder.Save(file);
+            }
+        }
+
+
+        private void SaveDoneImage()
     {
-      /*
-      RenderTargetBitmap renderTarget = new RenderTargetBitmap(
-                         (int)savedCropRect.Width, (int)savedCropRect.Height,
-                          96d, 96d, PixelFormats.Pbgra32);
-      // needed otherwise the image output is black
-      contentViewer.Measure(new Size((int)contentViewer.ActualWidth, (int)contentViewer.ActualHeight));
-      contentViewer.Arrange(new Rect(new Size((int)contentViewer.ActualWidth, (int)contentViewer.ActualHeight)));
-      contentViewer.UpdateLayout();
+            /*
+            RenderTargetBitmap renderTarget = new RenderTargetBitmap(
+                               (int)savedCropRect.Width, (int)savedCropRect.Height,
+                                96d, 96d, PixelFormats.Pbgra32);
+            // needed otherwise the image output is black
+            contentViewer.Measure(new Size((int)contentViewer.ActualWidth, (int)contentViewer.ActualHeight));
+            contentViewer.Arrange(new Rect(new Size((int)contentViewer.ActualWidth, (int)contentViewer.ActualHeight)));
+            contentViewer.UpdateLayout();
 
-      renderTarget.Render(contentViewer);
-      */
-
-      BitmapSource image = imgViewer.Source as BitmapSource;
+            renderTarget.Render(contentViewer);
+            */
+            
+       BitmapSource image = imgViewer.Source as BitmapSource;
       var scale = saveMatrix.M11;
       var (width, height) = (
         (int)Math.Round(image.PixelWidth * scale),
@@ -148,50 +173,25 @@ namespace CropImageSample
       var top = savedCropRect.Top + saveMatrix.OffsetY;
 
       var size = new Rect(left, top, savedCropRect.Width - saveMatrix.OffsetX, savedCropRect.Height - saveMatrix.OffsetY);
-
-      var pageView = contentViewer;
-      pageView.Measure(size.Size);
-      pageView.Arrange(size);
-      pageView.UpdateLayout();
-
-      renderTarget.Render(pageView);
-      renderTarget.Freeze();
-
-
-
             
+      var pageView = contentViewer;
+      WriteToPng(contentViewer, "testing.jpg", size);
+      //      pageView.Measure(size.Size);
+      //pageView.Arrange(size);
+      //pageView.UpdateLayout();
 
-            /*
-            double actualHeight = contentViewer.RenderSize.Height;
-            double actualWidth = contentViewer.RenderSize.Width;
+      //renderTarget.Render(pageView);
+      //renderTarget.Freeze();
+           
+      //      var imageEncoder = new JpegBitmapEncoder();
 
-            double renderHeight = actualHeight * saveMatrix.M11;
-            double renderWidth = actualWidth * saveMatrix.M11;
+      //imageEncoder.Frames.Add(BitmapFrame.Create(renderTarget));
 
-            RenderTargetBitmap renderTarget = new RenderTargetBitmap((int)renderWidth, (int)renderHeight, 96, 96, PixelFormats.Pbgra32);
-            VisualBrush sourceBrush = new VisualBrush(contentViewer);
+      //using (FileStream file = File.Create(@"test.jpg"))
+      //{
+      //  imageEncoder.Save(file);
 
-            DrawingVisual drawingVisual = new DrawingVisual();
-            DrawingContext drawingContext = drawingVisual.RenderOpen();
-
-            using (drawingContext)
-            {
-              drawingContext.PushTransform(new ScaleTransform(saveMatrix.M11, saveMatrix.M11));
-              //drawingContext.PushTransform(new MatrixTransform(saveMatrix));
-              drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0), new Point(actualWidth, actualHeight)));
-            }
-            renderTarget.Render(drawingVisual);
-            */
-
-            var imageEncoder = new JpegBitmapEncoder();
-
-      imageEncoder.Frames.Add(BitmapFrame.Create(renderTarget));
-
-      using (FileStream file = File.Create(@"test.jpg"))
-      {
-        imageEncoder.Save(file);
-
-      }
+      //}
     }
   }
 }
