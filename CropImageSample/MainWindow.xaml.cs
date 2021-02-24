@@ -158,29 +158,32 @@ namespace CropImageSample
       renderTarget.Freeze();
 
 
-      /*
-      double actualHeight = contentViewer.RenderSize.Height;
-      double actualWidth = contentViewer.RenderSize.Width;
 
-      double renderHeight = actualHeight * saveMatrix.M11;
-      double renderWidth = actualWidth * saveMatrix.M11;
+            
 
-      RenderTargetBitmap renderTarget = new RenderTargetBitmap((int)renderWidth, (int)renderHeight, 96, 96, PixelFormats.Pbgra32);
-      VisualBrush sourceBrush = new VisualBrush(contentViewer);
+            /*
+            double actualHeight = contentViewer.RenderSize.Height;
+            double actualWidth = contentViewer.RenderSize.Width;
 
-      DrawingVisual drawingVisual = new DrawingVisual();
-      DrawingContext drawingContext = drawingVisual.RenderOpen();
+            double renderHeight = actualHeight * saveMatrix.M11;
+            double renderWidth = actualWidth * saveMatrix.M11;
 
-      using (drawingContext)
-      {
-        drawingContext.PushTransform(new ScaleTransform(saveMatrix.M11, saveMatrix.M11));
-        //drawingContext.PushTransform(new MatrixTransform(saveMatrix));
-        drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0), new Point(actualWidth, actualHeight)));
-      }
-      renderTarget.Render(drawingVisual);
-      */
+            RenderTargetBitmap renderTarget = new RenderTargetBitmap((int)renderWidth, (int)renderHeight, 96, 96, PixelFormats.Pbgra32);
+            VisualBrush sourceBrush = new VisualBrush(contentViewer);
 
-      var imageEncoder = new JpegBitmapEncoder();
+            DrawingVisual drawingVisual = new DrawingVisual();
+            DrawingContext drawingContext = drawingVisual.RenderOpen();
+
+            using (drawingContext)
+            {
+              drawingContext.PushTransform(new ScaleTransform(saveMatrix.M11, saveMatrix.M11));
+              //drawingContext.PushTransform(new MatrixTransform(saveMatrix));
+              drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0), new Point(actualWidth, actualHeight)));
+            }
+            renderTarget.Render(drawingVisual);
+            */
+
+            var imageEncoder = new JpegBitmapEncoder();
 
       imageEncoder.Frames.Add(BitmapFrame.Create(renderTarget));
 

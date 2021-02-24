@@ -34,11 +34,11 @@
         </Grid>
         <Grid Grid.Column="0">
             <Border BorderThickness="5" BorderBrush="Red">
-                <Grid x:Name="mainGrid" Background="Pink" MouseDown="mainGrid_MouseDown" MouseMove="mainGrid_MouseMove" MouseUp="mainGrid_MouseUp" MouseWheel="mainGrid_MouseWheel"
+                <Grid x:Name="mainGrid"  MouseDown="mainGrid_MouseDown" MouseMove="mainGrid_MouseMove" MouseUp="mainGrid_MouseUp" MouseWheel="mainGrid_MouseWheel"
           SizeChanged="mainGrid_SizeChanged">
-                    <local:ContentViewer x:Name="contentViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                    
-                        <Grid  Background="Bisque">
+                    <local:ContentViewer x:Name="contentViewer" VerticalAlignment="Stretch" >
+
+                        <Grid Width="{Binding ActualWidth, ElementName=mainGrid}" Height="{Binding ActualHeight, ElementName=mainGrid}" >
                             <Image  x:Name="imgViewer" Stretch="Fill" Source="Penguins.jpg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
                         </Grid>
