@@ -43,7 +43,7 @@
 
                         </Grid>
                     </local:ContentViewer>
-                    <Canvas>
+                    <Canvas Name="can">
             <Rectangle x:Name="cropRect" Width="{Binding ActualWidth, ElementName=mainGrid}" Height="{Binding ActualHeight, ElementName=mainGrid}"
                 Canvas.Left="0" Canvas.Top="0"
                 Opacity="0.4" Fill="LightBlue"

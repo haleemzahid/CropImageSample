@@ -144,7 +144,34 @@ namespace CropImageSample
             using (var file = File.OpenWrite(filename))
             {
                 encoder.Save(file);
+               
+                imgViewer.Source = null;
+                file.Close();
+
+
             }
+            var d = Environment.CurrentDirectory;
+            var dataa = new BitmapImage();
+
+
+            dataa.BeginInit();
+            dataa.CacheOption = BitmapCacheOption.OnLoad;
+            dataa.UriSource = new Uri(d + "\\" + filename);
+            dataa.EndInit();
+            imgViewer.Source = dataa;
+            
+            savedCropRect = new Rect();
+            RefreshButton_Click(null,null);
+            MainWindow_Loaded(null,null);
+            
+           
+
+
+
+
+          
+           
+
         }
 
 
